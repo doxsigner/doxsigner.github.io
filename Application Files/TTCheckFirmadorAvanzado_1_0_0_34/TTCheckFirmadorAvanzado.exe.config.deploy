@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<configuration>
+  <configSections>
+    <section name="log4net" type="log4net.Config.Log4NetConfigurationSectionHandler, log4net"/>
+  </configSections>
+  <log4net>
+    <!--
+  This writes the log information to the console window.  It only logs events
+  that are at least at the INFO level (which would mean that DEBUG events are not
+  captured.
+  -->
+    <appender name="ConsoleAppender" type="log4net.Appender.ConsoleAppender">
+      <layout type="log4net.Layout.PatternLayout">
+        <conversionPattern value="%date{ABSOLUTE} [%thread] %level %logger - %message%newlineExtra Info: %property{testProperty}%newline%exception"/>
+      </layout>
+     <!-- <filter type="log4net.Filter.LevelRangeFilter">
+        <levelMin value="INFO"/>
+        <levelMax value="FATAL"/>
+      </filter> -->
+    </appender>
+    <!--
+  This stores information in the mylogfile.txt file.  It only captures log events
+  that contain the key word test or error.
+  -->
+    <appender name="RollingFileAppender" type="log4net.Appender.RollingFileAppender">
+      <file value="${APPDATA}\DoxSigner\doxsigner.log"/>
+      <appendToFile value="true"/>
+      <rollingStyle value="Size"/>
+      <maxSizeRollBackups value="5"/>
+      <maximumFileSize value="10MB"/>
+      <staticLogFileName value="true"/>
+     
+      <layout type="log4net.Layout.PatternLayout">
+        <conversionPattern value="%date [%thread] %level %logger - %message%newline%exception"/>
+      </layout>
+    </appender>
+    <root>
+      <level value="Debug"/>
+      <appender-ref ref="RollingFileAppender"/>
+    </root>
+    <logger name="Windowless_Sample.App">
+      <level value="DEBUG"/>
+      <appender-ref ref="ConsoleAppender"/>
+    </logger>
+  </log4net>
+  <startup>
+    <supportedRuntime version="v4.0" sku=".NETFramework,Version=v4.6" />
+  </startup>
+
+  <appSettings>
+    <add key="BaseURLAlfresco" value="https://web.totalcheck.cl" />
+    <add key="URLAlfrescoDescargaArchivos" value="https://web.totalcheck.cl/s/dox/timbrepdf/noderef/{0}/timbre/7?alf_ticket={1}" />
+    <add key="URLAlfrescoPostArchivos" value="https://web.totalcheck.cl/s/dox/timbrepdf/upload?alf_ticket={0}" />
+    <add key="URLLongPullingMQTTOut" value="https://web.totalcheck.cl/wsmqtt/mqtt?topic=feaout/{0}&amp;ticket={1}" />
+    <add key="URLLongPullingMQTTIn" value="https://web.totalcheck.cl/wsmqtt/weblong?topic=fea/{0}&amp;ticket={1}" />
+    <add key="URLAlfrescoLogin" value="https://web.totalcheck.cl/s/api/login/ticket/{0}?alf_ticket={0}" />
+    <add key="URLLogin" value="https://web.totalcheck.cl/s/api/login" />
+    <add key="BaseURLMQTT" value="iot.totalcheck.cl" />
+    <add key="PortMQTT" value="443" />
+    <add key="BaseTopicIn" value="fea/" />
+    <add key="BaseTopicOut" value="feaout/" />
+    <add key="CategoryHeadingColumn" value="1" />
+    <add key="ClientSettingsProvider.ServiceUri" value="" />
+  </appSettings>
+  <system.net>
+    <defaultProxy enabled="true" useDefaultCredentials="true" />
+  </system.net>
+  <!--
+<system.diagnostics>
+
+        <trace autoflush="true" /> 
+
+        <sources>
+            <source name="System.Net">
+                <listeners>
+                    <add name="MyTraceFile"/>
+                    <add name="MyConsole"/>
+                </listeners>
+            </source>
+        </sources>
+
+        <sharedListeners>
+            <add
+              name="MyTraceFile"
+              type="System.Diagnostics.TextWriterTraceListener"
+              initializeData="System.Net.trace.log" />
+                <add name="MyConsole" type="System.Diagnostics.ConsoleTraceListener" />
+        </sharedListeners>
+
+        <switches>
+            <add name="System.Net" value="Verbose" />
+        </switches>
+
+    </system.diagnostics>-->
+  <system.web>
+    <membership defaultProvider="ClientAuthenticationMembershipProvider">
+      <providers>
+        <add name="ClientAuthenticationMembershipProvider" type="System.Web.ClientServices.Providers.ClientFormsAuthenticationMembershipProvider, System.Web.Extensions, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" serviceUri="" />
+      </providers>
+    </membership>
+    <roleManager defaultProvider="ClientRoleProvider" enabled="true">
+      <providers>
+        <add name="ClientRoleProvider" type="System.Web.ClientServices.Providers.ClientRoleProvider, System.Web.Extensions, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" serviceUri="" cacheTimeout="86400" />
+      </providers>
+    </roleManager>
+  </system.web>
+</configuration>
